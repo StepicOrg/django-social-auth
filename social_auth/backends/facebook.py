@@ -11,7 +11,6 @@ setting, it must be a list of values to request.
 By default account id and token expiration time are stored in extra_data
 field, check OAuthBackend class for details on how to extend it.
 """
-import cgi
 import base64
 import hmac
 import hashlib
@@ -119,14 +118,14 @@ class FacebookAuth(BaseOAuth2):
                 'code': self.data['code']
             })
             try:
-                response = cgi.parse_qs(dsa_urlopen(url).read())
+                response = simplejson.loads(dsa_urlopen(url).read())
             except HTTPError:
                 raise AuthFailed(self, 'There was an error authenticating '
                                        'the app')
 
-            access_token = response['access_token'][0]
-            if 'expires' in response:
-                expires = response['expires'][0]
+            access_token = response['access_token']
+            if 'expires_in' in response:
+                expires = response['expires_in']
 
         if 'signed_request' in self.data:
             response = load_signed_request(
@@ -153,7 +152,7 @@ class FacebookAuth(BaseOAuth2):
     @classmethod
     def process_refresh_token_response(cls, response):
         return dict((key, val[0])
-                        for key, val in cgi.parse_qs(response).iteritems())
+                        for key, val in simplejson.loads(response).iteritems())
 
     @classmethod
     def refresh_token_params(cls, token):
