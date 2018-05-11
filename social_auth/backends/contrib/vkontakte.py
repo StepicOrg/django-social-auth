@@ -27,8 +27,8 @@ VK_SERVER = 'vk.com'
 VK_DEFAULT_DATA = ['first_name', 'last_name', 'screen_name',
                    'nickname', 'photo']
 
-VKONTAKTE_API_URL = 'https://api.vkontakte.ru/method/'
-VKONTAKTE_SERVER_API_URL = 'http://api.vkontakte.ru/api.php'
+VKONTAKTE_API_URL = 'https://api.vk.com/method/'
+VKONTAKTE_SERVER_API_URL = 'https://api.vk.com/api.php'
 VKONTAKTE_API_VERSION = '3.0'
 
 USE_APP_AUTH = setting('VKONTAKTE_APP_AUTH', False)
@@ -266,10 +266,10 @@ def vkontakte_api(method, data):
     """
 
     # We need to perform server-side call if no access_token
-    if not 'access_token' in data:
-        if not 'v' in data:
-            data['v'] = VKONTAKTE_API_VERSION
+    if not 'v' in data:
+        data['v'] = VKONTAKTE_API_VERSION
 
+    if not 'access_token' in data:
         if not 'api_id' in data:
             data['api_id'] = _api_get_val_fun('id', 'VKONTAKTE_APP_ID')
 
