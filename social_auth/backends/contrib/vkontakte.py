@@ -29,7 +29,7 @@ VK_DEFAULT_DATA = ['first_name', 'last_name', 'screen_name',
 
 VKONTAKTE_API_URL = 'https://api.vk.com/method/'
 VKONTAKTE_SERVER_API_URL = 'https://api.vk.com/api.php'
-VKONTAKTE_API_VERSION = '3.0'
+VKONTAKTE_API_VERSION = '5.95'
 
 USE_APP_AUTH = setting('VKONTAKTE_APP_AUTH', False)
 LOCAL_HTML = setting('VKONTAKTE_LOCAL_HTML', 'vkontakte.html')
@@ -158,7 +158,7 @@ class VKontakteOAuth2(BaseOAuth2):
         fields = ','.join(VK_DEFAULT_DATA + setting('VK_EXTRA_DATA', []))
         params = {'access_token': access_token,
                   'fields': fields,
-                  'uids': response.get('user_id')}
+                  'user_ids': response.get('user_id')}
 
         data = vkontakte_api('users.get', params)
 
